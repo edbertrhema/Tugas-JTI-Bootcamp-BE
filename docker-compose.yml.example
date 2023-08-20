@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+ # mongoDB service
+ mongo_db:
+  container_name: db_container
+  image: mongo:latest
+  restart: always
+  volume:
+    - mongo_db:/data/db
+
+ # Node API service
+
+  api:
+    build: .
+    ports:
+      - 4000:3000
+    enviroment:
+        MONGO_URL: mongodb+srv://admin:admin@cluster0.ni5odvz.mongodb.net/Node-API?retryWrites=true&w=majority
+        PORT:  3000
+        FRONTEND: http://localhost:5173
+    depends_on:
+        - mongo_db
+  
+volumes:
+  mongo_db: {}
